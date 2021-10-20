@@ -1,36 +1,24 @@
-import _, { padStart } from 'lodash'
-//import { alert, notice, info, success, error, defaultModules } from '@pnotify/core/dist/PNotify'
-//import * as PNotifyDesktop from '@pnotify/desktop'
+import _ from 'lodash'
 import '@pnotify/core/dist/PNotify.css'
 import '@pnotify/core/dist/BrightTheme.css'
-//import '@pnotify/mobile/dist/PNotifyMobile.css'
 import { alert, notice, info, success, error } from '@pnotify/core'
-import './sass/main.scss'
-import table from './template/markup.hbs'
-//import tooMany from './template/toMany.hbs'
-import picture from './template/picture.hbs'
+import '../sass/main.scss'
+import table from '../template/markup.hbs'
+import picture from '../template/picture.hbs'
 const search = document.getElementById('search')
 const insertData = document.getElementById('insert')
-
-
-const url = `https://restcountries.com/v2`
-const methodName = `name`
+import API from './fetchCountries'
 search.addEventListener('input', _.debounce(() =>
    {
-      fetch(`${url}/${methodName}/${search.value}`)
-         .then((response) => response.json())
-         .then((allCountry) => insertData.insertAdjacentHTML('beforeend', createMarkup(allCountry)))
+      API(search.value).then((allCountry) => insertData.insertAdjacentHTML('beforeend', createMarkup(allCountry)))
    }, 500))
-
 function createMarkup(allCountry) {
    switch (true) {
       case allCountry.length > 10:
          insertData.innerHTML = ''
       console.log(`это > 10  не показываем, и =`,allCountry.length)
-         
          err()
          return insertData.innerHTML = ''
-         //return tooMany(allCountry)
          break
       case allCountry.length > 1 && allCountry.length <= 10:
          insertData.innerHTML = ''
@@ -46,7 +34,8 @@ function createMarkup(allCountry) {
    }
 }
 function err() {
-   const myError = info({
+   const myError = error({
+      title: "ERROR!!!",
       text: "Too many matches found. Please enter a more specific query."
    })
 }
