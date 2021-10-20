@@ -1,11 +1,18 @@
 import _, { padStart } from 'lodash'
+//import { alert, notice, info, success, error, defaultModules } from '@pnotify/core/dist/PNotify'
+//import * as PNotifyDesktop from '@pnotify/desktop'
+import '@pnotify/core/dist/PNotify.css'
+import '@pnotify/core/dist/BrightTheme.css'
+//import '@pnotify/mobile/dist/PNotifyMobile.css'
+import { alert, notice, info, success, error } from '@pnotify/core'
 import './sass/main.scss'
 import table from './template/markup.hbs'
-import tooMany from './template/toMany.hbs'
+//import tooMany from './template/toMany.hbs'
+import picture from './template/picture.hbs'
 const search = document.getElementById('search')
 const insertData = document.getElementById('insert')
-console.log(search);
-search.style.background = 'red'
+
+
 const url = `https://restcountries.com/v2`
 const methodName = `name`
 search.addEventListener('input', _.debounce(() =>
@@ -20,7 +27,10 @@ function createMarkup(allCountry) {
       case allCountry.length > 10:
          insertData.innerHTML = ''
       console.log(`это > 10  не показываем, и =`,allCountry.length)
-         return tooMany(allCountry)
+         
+         err()
+         return insertData.innerHTML = ''
+         //return tooMany(allCountry)
          break
       case allCountry.length > 1 && allCountry.length <= 10:
          insertData.innerHTML = ''
@@ -30,27 +40,13 @@ function createMarkup(allCountry) {
       case allCountry.length == 1:
          insertData.innerHTML = ''
          console.log(` это=1 с картинкой, и =`,allCountry.length)
-         return table(allCountry)
+         return picture(allCountry)
          break
+      default: return insertData.innerHTML = '' 
    }
-   // if (allCountry.length > 10)
-   //    {
-   //    insertData.innerHTML = ''
-   //    console.log(`это > 10`,allCountry.length)
-   //       return tooMany(allCountry)
-   //    }
-   // else if ( allCountry.length > 1 && allCountry.length <= 10)
-   //    {
-   //    insertData.innerHTML = ''
-   //    console.log(`1 < это <= 10`,allCountry.length)
-   //       return template(allCountry)
-   //    }
-   // else (allCountry.length == 1)
-   //    {
-   //    insertData.innerHTML = ''
-   //    console.log(` это =1`,allCountry.length)
-   //       return template(allCountry)
-   //    }
-   }
-   
-
+}
+function err() {
+   const myError = info({
+      text: "Too many matches found. Please enter a more specific query."
+   })
+}
