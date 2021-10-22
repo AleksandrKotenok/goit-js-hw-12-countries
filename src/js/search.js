@@ -17,7 +17,7 @@ function createMarkup(allCountry) {
       case allCountry.length > 10:
          insertData.innerHTML = ''
       console.log(`это > 10  не показываем, и =`,allCountry.length)
-         err()
+         inform()
          return insertData.innerHTML = ''
          break
       case allCountry.length > 1 && allCountry.length <= 10:
@@ -30,12 +30,22 @@ function createMarkup(allCountry) {
          console.log(` это=1 с картинкой, и =`,allCountry.length)
          return picture(allCountry)
          break
-      default: return insertData.innerHTML = '' 
+      case allCountry.status == 404:
+         err()
+         console.log(`нет совпадений, ответ сервера:`,allCountry)
+         return insertData.innerHTML = ''
+      default: return insertData.innerHTML = ''
    }
 }
-function err() {
-   const myError = error({
-      title: "ERROR!!!",
+function inform() {
+   info({
+      title: "INFO!",
       text: "Too many matches found. Please enter a more specific query."
    })
+}
+function err() {
+   error({
+     title: "ERROR!",
+     text: "No matches on request."
+  })
 }
